@@ -1,0 +1,118 @@
+<%@page import="Modelo.Habitacion"%>
+<%@page import="java.util.List"%>
+<%@page import="Logica.Controladora"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital@1&display=swap" rel="stylesheet">
+         <link rel="stylesheet" href="css/style-listaEmpl.css">
+        <title>Lista de habitaciones</title>
+    </head>
+        <body class="img js-fullheight" style="background-image: url(images/iguazu.jpg);">
+          <div id="container">
+     <nav>   
+        <ul>
+            <li class ="ul-main"><a href="reserva.jsp">Inicio</a></li>
+            <li class="ul-main"><a href="#">Reservas<i class="down"></i></a>
+               <ul>
+                 <li class="ul-sub"><a href="#">Buscar<i class="down"></i></a>
+                     <ul>
+                <li class="ul-sub" ><a href="buscarReservaPorDia.jsp">Por fecha</a></li>
+                  <li class="ul-sub"><a href="buscarReservaPorEmpleado.jsp">Por empleado</a></li>
+                     <li class="ul-sub"><a href="buscarReservaPorHuespRango.jsp">Huesped/Rango</a></li>
+                     </ul>
+                <li class="ul-sub"><a href="listaReservas.jsp">Listar</a></li>
+                <li><a href="#"></a></li>
+            </ul>        
+            </li>
+            <li class="ul-main"><a href="#">Empleado<i class="down"></i></a>
+               <ul>
+                <li class="ul-sub"><a href="buscarEmpleado.jsp">Buscar</a></li>
+                <li class="ul-sub"><a href="nuevoEmpleado.jsp">Crear</a></li>
+                <li class="ul-sub"><a href="listaEmpleados.jsp">Listar</a></li>
+                                              </ul>
+                </li>
+                <li class="ul-main"><a href="#">Habitaciones<i class="down"></i></a>
+                       <ul>
+                <li class="ul-sub"><a href="crearHabitacion.jsp">Crear</a></li>
+                <li class="ul-sub" ><a href="listaHabitaciones.jsp">Listar</a></li>
+                <li><a href="#"></a></li>
+            </ul>        
+            </li>
+             <li class="ul-main"><a href="#">Huespedes<i class="down"></i></a>
+                  <ul>
+                <li class="ul-sub"><a href="buscarHuesped.jsp">Buscar</a></li>
+                <li class="ul-sub" ><a href="listaHuespedes.jsp">Listar</a></li>
+                <li><a href="#"></a></li>
+            </ul>        
+           <li class ="ul-main"><a href="index.jsp">Cerrar Sesión</a></li>
+            </ul>
+                        </nav>
+</div>                  
+  <div class="container">
+	<table class="table-list">
+            <caption class="title-form">Habitaciones</caption>
+		<thead>
+			<tr>
+				<th class='nom-column'>Nro</th>
+				<th class='nom-column'>Piso</th>
+				<th class='nom-column'>Tipo</th>
+                                                                                <th class='nom-column'>Tematica</th>
+                                                                                <th class='nom-column'>Precio</th>
+                                                                                <th class='nom-column'>Ocupado</th>
+                                                                                <th class='nom-column'></th>
+                                                                                <th class='nom-column'></th>
+				</tr>
+		</thead>
+		<tbody>
+                    <% Controladora control = new Controladora();
+                    List <Habitacion> listaHabitaciones = control.TraerHabitaciones();
+                    for (Habitacion hab : listaHabitaciones){
+                        %>
+                    			<tr>
+                                                                  <% int nro = hab.getNro();
+                                                                     double precio = hab.getPrecio();
+                                                                     int piso = hab.getPiso();
+                                                                     String tipo = hab.getTipo();
+                                                                     String tematica = hab.getTematica();
+                                                                      %>
+				<td><%=nro%></td>
+				<td><%=piso%> </td>
+				<td><%=tipo%></td>
+                                                                                 <td><%=tematica%></td>
+                                                                                  <td><%=precio%></td>
+                                                                                  <%String ocupado;
+                                                                                   if (hab.isOcupado()==true){
+                                                                                       ocupado = "Si";
+                                                                                   }else{
+                                                                                       ocupado = "No";
+                                                                                   }                                                                                     
+                                                                                       %>
+                                                                                   <td><%=ocupado%></td>
+                                <td>                
+                                    <form name="editar" action="" method="POST" style="display:inline" >  
+                                        <input type="hidden" name ="nro" value="<%=hab.getNro() %>">
+                                         <button type="submit" class="btn-editar" data-title="Edit" style="display:inline">Editar</button>
+                                                                                                     </form>
+                                                                </td>
+                                                                
+                                                                 <td>                
+                                    <form name="borrar" action="" method="POST" style="display:inline" >  
+                                        <input type="hidden" name ="nro" value="<%=nro%>">
+                                        <button type="submit" class="btn-borrar" data-title="Delete" style="display:inline">Borrar</button>
+                                                                                                     </form>
+                                                                </td>
+			</tr>
+			
+		</tbody>
+                <% } %>
+	</table>
+</div>
+    </body>
+</html>
